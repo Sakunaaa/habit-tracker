@@ -13,7 +13,7 @@ export default function Home() {
     const { data: habits, error } = await supabaseClient.from('habits').select('*');
     setHabits(habits)
     setIsLoading(false)
-    if (error.message) {
+    if (error) {
       setError(error.message)
     }
   };
@@ -22,10 +22,17 @@ export default function Home() {
     fetchHabits()
   
   }, [])
+
+  const toggleHabit = async (currentHabit) => {
+    const { data, error } = await supabaseClient
+  .from('habits')
+  .update({ is_done: !currentHabit.is_done })
+  .eq('id', currentHabit.id)
+  }
   
 	return <main>
     {error && <span>{error}</span>}
     {isLoading && <span>Loading...</span>}
-    {habits.map(habit => <li key={habit.id}>{habit.content}</li>)}
+    {habits.map(habit => <li key={habit.id}><span>{habit.content}</span> <button onClick={() => {toggleHabit(habit)}}>{`${habit.is_done}`}</button> </li>)}
   </main>;
 }
