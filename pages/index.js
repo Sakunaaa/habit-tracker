@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 // // 2.2. Znalezlibysmy habit o danym id
 // // 2.3. Zmienilibysmy jego wartosc is_done na przeciwna
 
-export default function Home() {
+const useGetHabits = () => {
 	const [habits, setHabits] = useState([]);
 	const [isFetching, setIsFetching] = useState(false);
 	const [error, setError] = useState(null);
@@ -28,17 +28,40 @@ export default function Home() {
 		fetchHabits();
 	}, []);
 
+	return {
+		data: habits,
+		error: error,
+		isFetching: isFetching,
+		refetch: fetchHabits,
+	};
+};
+
+export default function Home() {
+	const {
+		data: habits,
+		error: getHabitsError,
+		isFetching: isGetHabitsFetching,
+		refetch,
+	} = useGetHabits();
+	const [isToggleHabitFetching, setIsToggleHabitFetching] = useState(false);
+	const [toggleHabitError, setToggleHabitError] = useState(null);
+
 	const toggleHabit = async (currentHabit) => {
+		setIsToggleHabitFetching(true);
 		const { data, error } = await supabaseClient
 			.from('habits')
 			.update({ is_done: !currentHabit.is_done })
 			.eq('id', currentHabit.id);
+		setIsToggleHabitFetching(false);
 		if (error === null) {
-			fetchHabits();
+			refetch();
+		} else {
+			setToggleHabitError(error.message);
 		}
 	};
 
-	const isLoading = isFetching && habits.length === 0;
+	const isLoading = isGetHabitsFetching && habits.length === 0;
+	const error = getHabitsError || toggleHabitError;
 
 	return (
 		<main>
