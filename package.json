@@ -9,6 +9,11 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
+		"@emotion/react": "^11.10.5",
+		"@emotion/server": "^11.10.0",
+		"@mantine/core": "^5.10.2",
+		"@mantine/hooks": "^5.10.2",
+		"@mantine/next": "^5.10.2",
 		"@next/font": "13.1.2",
 		"@supabase/supabase-js": "^2.4.0",
 		"eslint": "8.31.0",

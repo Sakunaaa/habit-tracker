@@ -1,5 +1,7 @@
 import { supabaseClient } from '@/src/supabaseClient';
 import { useEffect, useState } from 'react';
+import { Button } from '@mantine/core';
+import { Avatar } from '@mantine/core';
 
 // 1. Po odpaleniu "toggleHabit", ponownie wywołujemy "fetchHabits"
 // 2. Ręcznie aktualizować "habits", zmieniając wartość is_done danego habita w naszej tablicy
@@ -67,14 +69,17 @@ export default function Home() {
 		<main>
 			{error && <span>{error}</span>}
 			{isLoading && <span>Loading...</span>}
+
 			{habits.map((habit) => (
 				<li key={habit.id}>
 					<span>{habit.content}</span>{' '}
-					<button
+					<Button
 						onClick={() => {
 							toggleHabit(habit);
 						}}
-					>{`${habit.is_done}`}</button>{' '}
+					>
+						{`${habit.is_done}`}
+					</Button>{' '}
 				</li>
 			))}
 		</main>
