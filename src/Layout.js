@@ -1,17 +1,21 @@
 import React from 'react';
-import { Avatar, Flex } from '@mantine/core';
+import { Avatar, Flex, Text } from '@mantine/core';
 
 export function Layout(props) {
 	return (
 		<div>
 			<Flex
 				mih={50}
-				justify="flex-end"
+				justify="space-between"
 				align="center"
 				direction="row"
 				wrap="wrap"
 				p="md"
 			>
+				<span></span>
+				<Text fz="24px" fw="700">
+					Habit
+				</Text>
 				<Avatar
 					variant="filled"
 					radius="xl"
