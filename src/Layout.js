@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Flex, Text } from '@mantine/core';
+import { Avatar, Flex, Text, Container } from '@mantine/core';
 
 function Nav() {
 	return (
@@ -27,9 +27,9 @@ function Nav() {
 
 export function Layout(props) {
 	return (
-		<div>
+		<Container size="lg">
 			<Nav />
 			{props.children}
-		</div>
+		</Container>
 	);
 }
