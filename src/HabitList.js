@@ -1,7 +1,15 @@
 import { supabaseClient } from '@/src/supabaseClient';
 import { useEffect, useState } from 'react';
-import { Button } from '@mantine/core';
+import {
+	Button,
+	Stack,
+	Flex,
+	Container,
+	ActionIcon,
+	Checkbox,
+} from '@mantine/core';
 import { Avatar } from '@mantine/core';
+import { Ico } from '@tabler/icons';
 
 // 1. Po odpaleniu "toggleHabit", ponownie wywołujemy "fetchHabits"
 // 2. Ręcznie aktualizować "habits", zmieniając wartość is_done danego habita w naszej tablicy
@@ -66,22 +74,48 @@ export function HabitList() {
 	const error = getHabitsError || toggleHabitError;
 
 	return (
-		<section>
+		<Container size="sm" component="section">
 			{error && <span>{error}</span>}
 			{isLoading && <span>Loading...</span>}
 
-			{habits.map((habit) => (
-				<li key={habit.id}>
-					<span>{habit.content}</span>{' '}
-					<Button
-						onClick={() => {
-							toggleHabit(habit);
-						}}
+			<Stack>
+				{habits.map((habit) => (
+					<Flex
+						key={habit.id}
+						bg="dark.6"
+						p="sm"
+						align="center"
+						justify="space-between"
+						sx={(theme) => ({
+							color: theme.colors.gray[0],
+							'&:hover': {
+								backgroundColor: theme.colors.dark[5],
+							},
+						})}
 					>
-						{`${habit.is_done}`}
-					</Button>{' '}
-				</li>
-			))}
-		</section>
+						<span>{habit.content}</span>
+						<Flex align="center" gap="lg">
+							<Checkbox
+								size="xl"
+								checked={habit.is_done}
+								onChange={() => {
+									toggleHabit(habit);
+								}}
+							/>
+							<Button
+								variant="outline"
+								sx={(theme) => ({
+									'&:hover': {
+										borderColor: theme.colors.red[7],
+									},
+								})}
+							>
+								🗑
+							</Button>
+						</Flex>
+					</Flex>
+				))}
+			</Stack>
+		</Container>
 	);
 }
