@@ -7,6 +7,7 @@ import {
 	Container,
 	ActionIcon,
 	Checkbox,
+	Text,
 } from '@mantine/core';
 import { Avatar } from '@mantine/core';
 import { Ico } from '@tabler/icons';
@@ -93,7 +94,9 @@ export function HabitList() {
 							},
 						})}
 					>
-						<span>{habit.content}</span>
+						<Text td={habit.is_done ? 'line-through' : 'none'}>
+							{habit.content}
+						</Text>
 						<Flex align="center" gap="lg">
 							<Checkbox
 								size="xl"
