@@ -70,6 +70,22 @@ export function HabitList() {
 			setToggleHabitError(error.message);
 		}
 	};
+	const [isDeleteHabitFetching, setIsDeleteHabitFetching] = useState(false);
+	const [deleteHabitError, setDeleteHabitError] = useState(null);
+
+	const deleteHabit = async (currentHabit) => {
+		setIsDeleteHabitFetching(true);
+		const { data, error } = await supabaseClient
+			.from('habits')
+			.delete()
+			.eq('id', currentHabit.id);
+		setIsDeleteHabitFetching(false);
+		if (error === null) {
+			refetch();
+		} else {
+			setDeleteHabitError(error.message);
+		}
+	};
 
 	const isLoading = isGetHabitsFetching && habits.length === 0;
 	const error = getHabitsError || toggleHabitError;
@@ -107,6 +123,9 @@ export function HabitList() {
 							/>
 							<Button
 								variant="outline"
+								onClick={() => {
+									deleteHabit(habit);
+								}}
 								sx={(theme) => ({
 									'&:hover': {
 										borderColor: theme.colors.red[7],
