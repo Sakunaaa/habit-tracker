@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { supabaseClient } from '@/src/supabaseClient';
 import { useEffect, useState } from 'react';
 import {
@@ -8,9 +9,9 @@ import {
 	ActionIcon,
 	Checkbox,
 	Text,
+	Title,
 } from '@mantine/core';
-import { Avatar } from '@mantine/core';
-import { Ico } from '@tabler/icons';
+import { Month, DatePicker } from '@mantine/dates';
 
 // 1. Po odpaleniu "toggleHabit", ponownie wywołujemy "fetchHabits"
 // 2. Ręcznie aktualizować "habits", zmieniając wartość is_done danego habita w naszej tablicy
@@ -90,53 +91,60 @@ export function HabitList() {
 	const isLoading = isGetHabitsFetching && habits.length === 0;
 	const error = getHabitsError || toggleHabitError;
 
+	const [value, setValue] = useState(new Date());
+
 	return (
 		<Container size="sm" component="section">
 			{error && <span>{error}</span>}
 			{isLoading && <span>Loading...</span>}
 
-			<Stack>
-				{habits.map((habit) => (
-					<Flex
-						key={habit.id}
-						bg="dark.6"
-						p="sm"
-						align="center"
-						justify="space-between"
-						sx={(theme) => ({
-							color: theme.colors.gray[0],
-							'&:hover': {
-								backgroundColor: theme.colors.dark[5],
-							},
-						})}
-					>
-						<Text td={habit.is_done ? 'line-through' : 'none'}>
-							{habit.content}
-						</Text>
-						<Flex align="center" gap="lg">
-							<Checkbox
-								size="xl"
-								checked={habit.is_done}
-								onChange={() => {
-									toggleHabit(habit);
-								}}
-							/>
-							<Button
-								variant="outline"
-								onClick={() => {
-									deleteHabit(habit);
-								}}
-								sx={(theme) => ({
-									'&:hover': {
-										borderColor: theme.colors.red[7],
-									},
-								})}
-							>
-								🗑
-							</Button>
+			<Stack align="center">
+				<Title order={1}>Today's Date</Title>
+				<Month month={value} value={value} onChange={setValue} />
+				{/* <DatePicker /> */}
+				<Stack style={{ width: '100%' }}>
+					{habits.map((habit) => (
+						<Flex
+							key={habit.id}
+							bg="dark.6"
+							p="sm"
+							align="center"
+							justify="space-between"
+							sx={(theme) => ({
+								color: theme.colors.gray[0],
+								'&:hover': {
+									backgroundColor: theme.colors.dark[5],
+								},
+							})}
+						>
+							<Text td={habit.is_done ? 'line-through' : 'none'}>
+								{habit.content}
+							</Text>
+							<Flex align="center" gap="lg">
+								<Checkbox
+									size="xl"
+									checked={habit.is_done}
+									onChange={() => {
+										toggleHabit(habit);
+									}}
+								/>
+								<Button
+									variant="outline"
+									onClick={() => {
+										deleteHabit(habit);
+									}}
+									sx={(theme) => ({
+										'&:hover': {
+											borderColor: theme.colors.red[7],
+										},
+									})}
+								>
+									🗑
+								</Button>
+							</Flex>
 						</Flex>
-					</Flex>
-				))}
+					))}
+				</Stack>
 			</Stack>
 		</Container>
 	);
