@@ -48,6 +48,20 @@ const useGetHabits = () => {
 	};
 };
 
+function capitalize(string) {
+	return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+const getTodayDate = () => {
+	const today = new Date();
+	// Poniedziałek, 26 stycznia 2023
+	const [day, year] = [today.getDate(), today.getFullYear()];
+	const month = today.toLocaleString('pl-pl', { month: 'long' });
+	const weekday = today.toLocaleString('pl-pl', { weekday: 'long' });
+
+	return `${capitalize(weekday)}, ${day} ${capitalize(month)} ${year}`;
+};
+
 export function HabitList() {
 	const {
 		data: habits,
@@ -93,13 +107,15 @@ export function HabitList() {
 
 	const [value, setValue] = useState(new Date());
 
+	const today = getTodayDate();
+
 	return (
 		<Container size="sm" component="section">
 			{error && <span>{error}</span>}
 			{isLoading && <span>Loading...</span>}
 
 			<Stack align="center">
-				<Title order={1}>Today's Date</Title>
+				<Title order={1}>{today}</Title>
 				<Month month={value} value={value} onChange={setValue} />
 				{/* <DatePicker /> */}
 				<Stack style={{ width: '100%' }}>
