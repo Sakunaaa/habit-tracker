@@ -31,7 +31,7 @@ function Nav() {
 	);
 }
 
-export function Layout(props) {
+export function MainLayout(props) {
 	return (
 		<Container size="lg">
 			<Nav />

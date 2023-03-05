@@ -1,10 +1,10 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { MantineProvider } from '@mantine/core';
-import { Layout } from '@/src/Layout';
 
 export default function App(props) {
 	const { Component, pageProps } = props;
+	const getLayout = Component.getLayout || ((page) => page);
 
 	return (
 		<>
@@ -25,9 +25,7 @@ export default function App(props) {
 					primaryColor: 'teal',
 				}}
 			>
-				<Layout>
-					<Component {...pageProps} />
-				</Layout>
+				{getLayout(<Component {...pageProps} />)}
 			</MantineProvider>
 		</>
 	);
