@@ -1,10 +1,15 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { MantineProvider } from '@mantine/core';
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { SessionContextProvider } from '@supabase/auth-helpers-react';
+import { useState } from 'react';
 
 export default function App(props) {
 	const { Component, pageProps } = props;
 	const getLayout = Component.getLayout || ((page) => page);
+
+	const [supabaseClient] = useState(() => createBrowserSupabaseClient());
 
 	return (
 		<>
@@ -25,7 +30,12 @@ export default function App(props) {
 					primaryColor: 'teal',
 				}}
 			>
-				{getLayout(<Component {...pageProps} />)}
+				<SessionContextProvider
+					supabaseClient={supabaseClient}
+					initialSession={pageProps.initialSession}
+				>
+					{getLayout(<Component {...pageProps} />)}
+				</SessionContextProvider>
 			</MantineProvider>
 		</>
 	);
