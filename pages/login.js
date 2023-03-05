@@ -1,17 +1,14 @@
 import { Button, Container, Box, Text, Flex } from '@mantine/core';
-import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useEffect, useState } from 'react';
+import { supabaseClient } from '@/src/supabaseClient';
 
 const Login = () => {
-	const supabaseClient = useSupabaseClient();
-	const user = useUser();
 	async function signInWithGitHub() {
 		const { data, error } = await supabaseClient.auth.signInWithOAuth({
 			provider: 'github',
 		});
 		console.log(data);
 	}
-	console.log(user);
 	return (
 		<Flex h="100%" align="center" justify="center">
 			<Box
