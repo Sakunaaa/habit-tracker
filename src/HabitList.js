@@ -102,7 +102,8 @@ export function HabitList() {
 		}
 	};
 
-	const isLoading = isGetHabitsFetching && habits.length === 0;
+	const isLoading = isGetHabitsFetching;
+	const isEmpty = habits.length === 0;
 	const error = getHabitsError || toggleHabitError;
 
 	const [value, setValue] = useState(new Date());
@@ -111,13 +112,12 @@ export function HabitList() {
 
 	return (
 		<Container size="sm" component="section">
-			{error && <span>{error}</span>}
-			{isLoading && <span>Loading...</span>}
-
 			<Stack align="center">
 				<Title order={1}>{today}</Title>
 				<Month month={value} value={value} onChange={setValue} />
-				{/* <DatePicker /> */}
+				{error && <span>{error}</span>}
+				{isLoading && <span>Loading...</span>}
+				{isEmpty && <span>No habits found.</span>}
 				<Stack style={{ width: '100%' }}>
 					{habits.map((habit) => (
 						<Flex
