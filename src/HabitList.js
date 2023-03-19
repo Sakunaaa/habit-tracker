@@ -88,6 +88,13 @@ export function HabitList() {
 	const [isDeleteHabitFetching, setIsDeleteHabitFetching] = useState(false);
 	const [deleteHabitError, setDeleteHabitError] = useState(null);
 
+	const addNewHabit = async () => {
+		const { data, error } = await supabaseClient
+			.from('habits')
+			.insert([{ content: 'dupa', is_done: false }]);
+		console.log(data);
+	};
+
 	const deleteHabit = async (currentHabit) => {
 		setIsDeleteHabitFetching(true);
 		const { data, error } = await supabaseClient
@@ -161,6 +168,13 @@ export function HabitList() {
 						</Flex>
 					))}
 				</Stack>
+				<Button
+					onClick={() => {
+						addNewHabit();
+					}}
+				>
+					Add new habit
+				</Button>
 			</Stack>
 		</Container>
 	);
