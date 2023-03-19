@@ -1,7 +1,13 @@
 import React from 'react';
 import { Avatar, Flex, Text, Container } from '@mantine/core';
+import { useContext } from 'react';
+import { UserContext } from './AuthLayout';
 
 function Nav() {
+	const user = useContext(UserContext);
+
+	const avatar = user ? user.user_metadata.avatar_url : '';
+
 	return (
 		<Flex
 			mih={50}
@@ -16,17 +22,12 @@ function Nav() {
 				variant="filled"
 				radius="xl"
 				color="teal"
-				src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
+				src={avatar}
 			/>
 			<Text fz="24px" fw="700">
 				Habit
 			</Text>
-			<Avatar
-				variant="filled"
-				radius="xl"
-				color="teal"
-				src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
-			/>
+			<Avatar variant="filled" radius="xl" color="teal" src={avatar} />
 		</Flex>
 	);
 }

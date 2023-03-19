@@ -12,6 +12,8 @@ import {
 	Title,
 } from '@mantine/core';
 import { Month, DatePicker } from '@mantine/dates';
+import { useContext } from 'react';
+import { UserContext } from './AuthLayout';
 
 // 1. Po odpaleniu "toggleHabit", ponownie wywołujemy "fetchHabits"
 // 2. Ręcznie aktualizować "habits", zmieniając wartość is_done danego habita w naszej tablicy
@@ -63,6 +65,7 @@ const getTodayDate = () => {
 };
 
 export function HabitList() {
+	const user = useContext(UserContext);
 	const {
 		data: habits,
 		error: getHabitsError,
@@ -71,6 +74,12 @@ export function HabitList() {
 	} = useGetHabits();
 	const [isToggleHabitFetching, setIsToggleHabitFetching] = useState(false);
 	const [toggleHabitError, setToggleHabitError] = useState(null);
+
+	const addNewHabit = async (currentHabit) => {
+		const { data, error } = await supabaseClient
+			.from('habits')
+			.insert([{ is_done: false, content: 'pedro', user_id: user.id }]);
+	};
 
 	const toggleHabit = async (currentHabit) => {
 		setIsToggleHabitFetching(true);
@@ -161,6 +170,7 @@ export function HabitList() {
 						</Flex>
 					))}
 				</Stack>
+				<Button onClick={addNewHabit}>Add new habit</Button>
 			</Stack>
 		</Container>
 	);
