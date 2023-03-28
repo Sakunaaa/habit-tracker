@@ -1,5 +1,5 @@
 import React from 'react';
-import { HabitList } from '@/src/HabitList';
+import { Tasks } from '@/src/Tasks';
 import { Title } from '@mantine/core';
 import { MainLayout } from '@/src/MainLayout';
 import { AuthLayout } from '@/src/AuthLayout';
@@ -14,7 +14,7 @@ const IndexPage = () => {
 				<title>HabitTracker</title>
 			</Head>
 			<Title></Title>
-			<HabitList />
+			<Tasks />
 		</main>
 	);
 };
