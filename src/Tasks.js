@@ -2,11 +2,11 @@
 import { supabaseClient } from '@/src/supabaseClient';
 import { useEffect, useState } from 'react';
 import {
+	ActionIcon,
 	Button,
 	Stack,
 	Flex,
 	Container,
-	ActionIcon,
 	Checkbox,
 	Text,
 	Title,
@@ -15,6 +15,8 @@ import { Month, DatePicker } from '@mantine/dates';
 import { useContext } from 'react';
 import { UserContext } from './AuthLayout';
 import { useGetTasks } from './hooks';
+import { IconPlus } from '@tabler/icons-react';
+import Link from 'next/link';
 
 function capitalize(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
@@ -71,7 +73,19 @@ export function Tasks() {
 				{error && <span>{error}</span>}
 				{isLoading && <span>Loading...</span>}
 				{isEmpty && <span>No tasks found.</span>}
-
+				<Flex gap="lg" align="center">
+					<Text
+						fw={500}
+						sx={{ letterSpacing: 1.05 }}
+						fz="lg"
+						tt="uppercase"
+					>{`${tasks.length} Habits`}</Text>
+					<Link href="/new-habit">
+						<ActionIcon color="primary" variant="outline">
+							<IconPlus size="1.125rem" />
+						</ActionIcon>
+					</Link>
+				</Flex>
 				<Stack style={{ width: '100%' }}>
 					{tasks.map((task) => (
 						<Flex
