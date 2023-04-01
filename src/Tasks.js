@@ -16,11 +16,6 @@ import { useContext } from 'react';
 import { UserContext } from './AuthLayout';
 import { useGetTasks } from './hooks';
 
-// 1. Po kliknieciu przycisku "Add task" pojawia nam sie input nazwy habita (state boolean np isTaskFormShowing)
-// 2. Formularz ma sie submitowac na klikniecie Entera
-// 3. Na submit wysyla sie zapytanie do SupaBase o utworzenie nowego habita
-// 4. Po udanym utworzeniu habita pobierz ponownie liste habitow oraz wyczysc formularz
-
 function capitalize(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -49,8 +44,8 @@ export function Tasks() {
 	const toggleTask = async (currentTask) => {
 		setIsToggleTaskFetching(true);
 		const { data, error } = await supabaseClient
-			.from('old_habits')
-			.update({ is_done: !currentTask.is_done })
+			.from('tasks')
+			.update({ checked: !currentTask.checked })
 			.eq('id', currentTask.id);
 		setIsToggleTaskFetching(false);
 		if (error === null) {
@@ -60,11 +55,11 @@ export function Tasks() {
 		}
 	};
 
-	const isLoading = isGetTasksFetching;
+	const isLoading = isGetTasksFetching && !tasks.length;
 	const isEmpty = tasks.length === 0;
 	const error = getTasksError || toggleTaskError;
 
-	const [value, setValue] = useState(new Date());
+	const [date, setDate] = useState(new Date());
 
 	const today = getTodayDate();
 
@@ -72,10 +67,11 @@ export function Tasks() {
 		<Container size="sm" component="section">
 			<Stack align="center">
 				<Title order={1}>{today}</Title>
-				<Month month={value} value={value} onChange={setValue} />
+				<Month month={date} value={date} onChange={setDate} />
 				{error && <span>{error}</span>}
 				{isLoading && <span>Loading...</span>}
 				{isEmpty && <span>No tasks found.</span>}
+
 				<Stack style={{ width: '100%' }}>
 					{tasks.map((task) => (
 						<Flex
@@ -91,13 +87,13 @@ export function Tasks() {
 								},
 							})}
 						>
-							<Text td={task.is_done ? 'line-through' : 'none'}>
+							<Text td={task.checked ? 'line-through' : 'none'}>
 								{task.habits.content}
 							</Text>
 							<Flex align="center" gap="lg">
 								<Checkbox
 									size="xl"
-									checked={task.is_done}
+									checked={task.checked}
 									onChange={() => {
 										toggleTask(task);
 									}}
